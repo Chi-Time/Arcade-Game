@@ -10,6 +10,11 @@ public class PlayerController : Entity
 
     private bool _CanFire = true;
 
+    private void Update ()
+    {
+        GetInput ();
+    } 
+
     private void GetInput ()
     {
         if(Input.GetButtonDown("Fire1") && _CanFire)
