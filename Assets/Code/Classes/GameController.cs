@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour
+{
+    public int Score { get { return _Score; } set { UpdateScore (value); } }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    private int _Score = 0;
+
+    private void UpdateScore (int score)
+    {
+        _Score = score;
+    }
 }
