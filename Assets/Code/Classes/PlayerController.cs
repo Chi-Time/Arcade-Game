@@ -19,6 +19,7 @@ public class PlayerController : Entity
         float y = Input.GetAxis ("Vertical");
 
         //TODO: Lock player to fixed axis based on movement.
+        //TODO: Get angle of player sprite for projectile.
         //TODO: Rotate player sprite.
         Move (new Vector2 (x, y));
     }
