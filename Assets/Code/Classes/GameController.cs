@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour
 {
     public int Score { get { return _Score; } set { UpdateScore (value); } }
 
-    private int _Score = 0;
+    [SerializeField] private int _Score = 0;
 
     private void UpdateScore (int score)
     {
