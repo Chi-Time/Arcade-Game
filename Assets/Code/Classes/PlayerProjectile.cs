@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent (typeof (Rigidbody2D))]
 public class PlayerProjectile : MonoBehaviour
 {
     [Tooltip("The speed of the projectile's movement.")]
