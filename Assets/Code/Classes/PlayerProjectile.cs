@@ -63,7 +63,6 @@ public class PlayerProjectile : MonoBehaviour
 
     private void Cull ()
     {
-        //TOOD: Destroy for now, consider pool eventually.
-        Destroy (this.gameObject);
+        _Pool.ReturnToPool (this);
     } 
 }
