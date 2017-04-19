@@ -22,7 +22,23 @@ public class BulletPool
 
     private PlayerProjectile SpawnProjectile (int index)
     {
-        return null;
+        var go = (GameObject)Object.Instantiate (_ProjectilePrefab.gameObject, Vector3.zero, Quaternion.identity);
+        go.transform.SetParent (GetPoolHolder ());
+        go.name = "Projectile " + index;
+        go.SetActive (false);
+
+        var projectile = go.GetComponent<PlayerProjectile> ();
+        projectile.SetReference (this);
+
+        return projectile;
+    }
+
+    private Transform GetPoolHolder ()
+    {
+        if (!GameObject.Find ("Bullet Pool"))
+            return new GameObject ("Bullet Pool").transform;
+
+        return GameObject.Find ("Bullet Pool").transform;
     }
 
     private PlayerProjectile RetrieveFromPool ()
