@@ -40,8 +40,16 @@ public class PlayerProjectile : MonoBehaviour
         _Rigidbody2D.gravityScale = 0f;
         _Rigidbody2D.isKinematic = true;
         _Rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
 
-        Invoke ("Cull", _Lifetime);
+    private void OnEnable ()
+    {
+        StartCoroutine (Cull (_Lifetime));
+    }
+
+    private void OnDisable ()
+    {
+        StopAllCoroutines ();
     }
 
     private void Update ()
@@ -58,11 +66,13 @@ public class PlayerProjectile : MonoBehaviour
     {
         //TODO: Implement collision logic with enemies and walls.
         if (!other.CompareTag ("Player"))
-            Cull ();
+            StartCoroutine (Cull (0.0f));
     }
 
-    private void Cull ()
+    private IEnumerator Cull (float delay)
     {
+        yield return new WaitForSeconds (delay);
+
         _Pool.ReturnToPool (this);
     } 
 }
