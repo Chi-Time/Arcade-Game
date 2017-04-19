@@ -66,6 +66,8 @@ public class BulletPool
             _ActivePool.Add (projectile);
 
             projectile.gameObject.SetActive (true);
+
+            return projectile;
         }
 
         return null;
