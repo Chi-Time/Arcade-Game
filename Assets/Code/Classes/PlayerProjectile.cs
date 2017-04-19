@@ -12,6 +12,7 @@ public class PlayerProjectile : MonoBehaviour
 
     private Rigidbody2D _Rigidbody2D = null;
     private Transform _Transform = null;
+    private BulletPool _Pool = null;
 
     private void Awake ()
     {
@@ -22,6 +23,11 @@ public class PlayerProjectile : MonoBehaviour
     {
         _Rigidbody2D = GetComponent<Rigidbody2D> ();
         _Transform = GetComponent<Transform> ();
+    }
+
+    public void SetReference (BulletPool pool)
+    {
+        _Pool = pool;
     }
 
     private void Start ()
