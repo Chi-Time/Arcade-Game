@@ -42,7 +42,7 @@ public class PlayerController : Entity
     protected override void Move (Vector2 dir)
     {
         _CurrentDirection = dir;
-        _Transform.Translate (dir * Time.deltaTime * _Speed);
+        _Transform.Translate (dir * (Time.deltaTime * _Speed));
     }
 
     private IEnumerator FireProjectile ()
