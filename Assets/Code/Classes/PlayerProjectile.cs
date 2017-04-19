@@ -45,7 +45,7 @@ public class PlayerProjectile : MonoBehaviour
 
     private void Move ()
     {
-        _Transform.Translate (_Transform.forward * Time.deltaTime * _Speed);
+        _Transform.Translate (_Transform.up * Time.deltaTime * _Speed);
     }
 
     private void OnTriggerEnter2D (Collider2D other)
