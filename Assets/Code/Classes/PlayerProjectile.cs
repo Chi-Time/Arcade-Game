@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof (Rigidbody2D))]
-public class PlayerProjectile : MonoBehaviour
+public class PlayerProjectile : PoolObject
 {
     [Tooltip("The speed of the projectile's movement.")]
     [SerializeField] private float _Speed = 0.0f;
@@ -12,7 +12,7 @@ public class PlayerProjectile : MonoBehaviour
 
     private Rigidbody2D _Rigidbody2D = null;
     private Transform _Transform = null;
-    private BulletPool _Pool = null;
+    //private BulletPool _Pool = null;
 
     private void Awake ()
     {
@@ -25,10 +25,10 @@ public class PlayerProjectile : MonoBehaviour
         _Transform = GetComponent<Transform> ();
     }
 
-    public void SetReference (BulletPool pool)
-    {
-        _Pool = pool;
-    }
+    //public void SetReference (BulletPool pool)
+    //{
+    //    _Pool = pool;
+    //}
 
     private void Start ()
     {
@@ -44,7 +44,7 @@ public class PlayerProjectile : MonoBehaviour
 
     private void OnEnable ()
     {
-        StartCoroutine (Cull (_Lifetime));
+        StartCoroutine (TimedCull (_Lifetime));
     }
 
     private void OnDisable ()
@@ -66,13 +66,13 @@ public class PlayerProjectile : MonoBehaviour
     {
         //TODO: Implement collision logic with enemies and walls.
         if (!other.CompareTag ("Player"))
-            StartCoroutine (Cull (0.0f));
+            StartCoroutine (TimedCull (0.0f));
     }
 
-    private IEnumerator Cull (float delay)
+    private IEnumerator TimedCull (float delay)
     {
         yield return new WaitForSeconds (delay);
 
-        _Pool.ReturnToPool (this);
+        Cull ();
     } 
 }
