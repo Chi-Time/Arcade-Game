@@ -68,6 +68,15 @@ public class Pickup : MonoBehaviour, IPoolable
             _SpriteRenderer.color = new Color (color.r, color.g, color.b, 1.0f);
     }
 
+    private void OnTriggerEnter2D (Collider2D other)
+    {
+        if(other.CompareTag("Player"))
+        {
+            GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().Score++;
+            Cull ();
+        }
+    }
+
     public void Cull ()
     {
         _IsBlinking = false;
