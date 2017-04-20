@@ -13,7 +13,7 @@ public class PlayerProjectile : MonoBehaviour, IPoolable
     private Rigidbody2D _Rigidbody2D = null;
     private Transform _Transform = null;
     private Pool _Pool = null;
-    //private BulletPool _Pool = null;
+ 
 
     private void Awake ()
     {
@@ -25,11 +25,6 @@ public class PlayerProjectile : MonoBehaviour, IPoolable
         _Rigidbody2D = GetComponent<Rigidbody2D> ();
         _Transform = GetComponent<Transform> ();
     }
-
-    //public void SetReference (BulletPool pool)
-    //{
-    //    _Pool = pool;
-    //}
 
     public void SetPool (Pool pool)
     {
@@ -70,7 +65,6 @@ public class PlayerProjectile : MonoBehaviour, IPoolable
 
     private void OnTriggerEnter2D (Collider2D other)
     {
-        //TODO: Implement collision logic with enemies and walls.
         if (!other.CompareTag ("Player"))
             StartCoroutine (TimedCull (0.0f));
     }
