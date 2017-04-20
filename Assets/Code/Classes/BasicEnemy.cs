@@ -7,7 +7,7 @@ enum States
     Attack
 };
 
-public class BasicEnemy : Entity
+public class BasicEnemy : Entity, IPoolable
 {
     [SerializeField] private float _ChangeRate = 0.5f;
 
@@ -15,6 +15,7 @@ public class BasicEnemy : Entity
     private States _CurrentState = States.Attack;
     private Transform _Target = null;
     private bool _CanChange = true;
+    private Pool _Pool = null;
 
     protected override void Setup ()
     {
@@ -23,6 +24,11 @@ public class BasicEnemy : Entity
         _Target = GameObject.FindGameObjectWithTag ("Player").transform;
 
         SelectState ();
+    }
+
+    public void SetPool (Pool pool)
+    {
+        _Pool = pool;
     }
 
     private void SelectState ()
@@ -123,4 +129,9 @@ public class BasicEnemy : Entity
         if (other.CompareTag ("Projectile"))
             Health--;
     }
+
+    public void Cull ()
+    {
+        _Pool.ReturnToPool (this.gameObject);
+    } 
 }

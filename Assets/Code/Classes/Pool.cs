@@ -6,8 +6,8 @@ public class Pool
 {
     [SerializeField] private int _PoolSize = 0;
     [SerializeField] private GameObject _ProjectilePrefab = null;
-    [SerializeField] private List<PoolObject> _ActivePool = new List<PoolObject> ();
-    [SerializeField] private List<PoolObject> _InactivePool = new List<PoolObject> ();
+    [SerializeField] private List<GameObject> _ActivePool = new List<GameObject> ();
+    [SerializeField] private List<GameObject> _InactivePool = new List<GameObject> ();
 
     private string _PoolName = "Pool";
 
@@ -31,17 +31,17 @@ public class Pool
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    private PoolObject SpawnPoolObject (int index)
+    private GameObject SpawnPoolObject (int index)
     {
         var go = (GameObject)Object.Instantiate (_ProjectilePrefab.gameObject, Vector3.zero, Quaternion.identity);
         go.transform.SetParent (GetPoolHolder ());
         go.name = "Projectile " + index;
         go.SetActive (false);
 
-        var poolObj = go.GetComponent<PoolObject> ();
-        poolObj.Setup (this);
+        var poolObj = go.GetComponent<IPoolable> ();
+        poolObj.SetPool (this);
 
-        return poolObj;
+        return go;
     }
 
     /// <summary>
@@ -60,7 +60,7 @@ public class Pool
     /// Retrieves an object from the pool ready to go.
     /// </summary>
     /// <returns></returns>
-    public PoolObject RetrieveFromPool ()
+    public GameObject RetrieveFromPool ()
     {
         if (_InactivePool.Count > 0)
         {
@@ -80,7 +80,7 @@ public class Pool
     /// Returns the object back to the pool and resets it.
     /// </summary>
     /// <param name="poolObj"></param>
-    public void ReturnToPool (PoolObject poolObj)
+    public void ReturnToPool (GameObject poolObj)
     {
         _ActivePool.Remove (poolObj);
         _InactivePool.Add (poolObj);
