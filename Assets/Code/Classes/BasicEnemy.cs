@@ -12,7 +12,7 @@ public class BasicEnemy : Entity
     [SerializeField] private float _ChangeRate = 0.5f;
 
     private Vector3 _CurrentDirection = Vector3.zero;
-    private States _CurrentState = States.Patrol;
+    private States _CurrentState = States.Attack;
     private Transform _Target = null;
     private bool _CanChange = true;
 
@@ -21,11 +21,13 @@ public class BasicEnemy : Entity
         base.Setup ();
 
         _Target = GameObject.FindGameObjectWithTag ("Player").transform;
+
+        SelectState ();
     }
 
     private void SelectState ()
     {
-        int index = Random.Range (0, 1);
+        int index = Random.Range (0, 2);
 
         switch (index)
         {
@@ -42,8 +44,8 @@ public class BasicEnemy : Entity
     {
         if (_CurrentState == States.Patrol)
             Patrol ();
-
-        Attack ();
+        else
+            Attack ();
     }
 
     private void Patrol ()
@@ -101,13 +103,13 @@ public class BasicEnemy : Entity
 
     private void Attack ()
     {
-        if(_Target)
+        if (_Target)
         {
             float step = _Speed * Time.deltaTime;
             _Rigidbody2D.MovePosition (Vector3.MoveTowards (_Transform.position, _Target.position, step));
         }
-
-        _CurrentState = States.Patrol;
+        else
+            _CurrentState = States.Patrol;
     }
 
     protected override void Move (Vector2 dir)
