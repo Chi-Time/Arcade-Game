@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class Pool
 {
     [SerializeField] private int _PoolSize = 0;
-    [SerializeField] private GameObject _ProjectilePrefab = null;
+    [SerializeField] private GameObject[] _Prefabs = null;
     [SerializeField] private List<GameObject> _ActivePool = new List<GameObject> ();
     [SerializeField] private List<GameObject> _InactivePool = new List<GameObject> ();
 
@@ -23,7 +23,10 @@ public class Pool
     private void GeneratePool ()
     {
         for (int i = 0; i < _PoolSize; i++)
-            _InactivePool.Add (SpawnPoolObject (i));
+        {
+            for (int j = 0; j < _Prefabs.Length; j++)
+                _InactivePool.Add (SpawnPoolObject (_Prefabs[j], i));
+        }
     }
 
     /// <summary>
@@ -31,9 +34,9 @@ public class Pool
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    private GameObject SpawnPoolObject (int index)
+    private GameObject SpawnPoolObject (GameObject obj, int index)
     {
-        var go = (GameObject)Object.Instantiate (_ProjectilePrefab.gameObject, Vector3.zero, Quaternion.identity);
+        var go = (GameObject)Object.Instantiate (obj, Vector3.zero, Quaternion.identity);
         go.transform.SetParent (GetPoolHolder ());
         go.name = "Projectile " + index;
         go.SetActive (false);
