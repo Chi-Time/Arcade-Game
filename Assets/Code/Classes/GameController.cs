@@ -5,8 +5,14 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public int Score { get { return _Score; } set { UpdateScore (value); } }
+    public Pool CoinPool = new Pool ();
 
     [SerializeField] private int _Score = 0;
+
+    private void Awake ()
+    {
+        CoinPool.Intialise ("Coin Pool");
+    } 
 
     private void UpdateScore (int score)
     {
