@@ -12,7 +12,7 @@ public class BasicEnemy : Entity
     [SerializeField] private float _ChangeRate = 0.5f;
 
     private Vector3 _CurrentDirection = Vector3.zero;
-    private States _CurrentState = States.Attack;
+    private States _CurrentState = States.Patrol;
     private Transform _Target = null;
     private bool _CanChange = true;
 
@@ -22,6 +22,21 @@ public class BasicEnemy : Entity
 
         _Target = GameObject.FindGameObjectWithTag ("Player").transform;
     }
+
+    private void SelectState ()
+    {
+        int index = Random.Range (0, 1);
+
+        switch (index)
+        {
+            case 0:
+                _CurrentState = States.Patrol;
+                break;
+            case 1:
+                _CurrentState = States.Attack;
+                break;
+        }
+    } 
 
     private void Update ()
     {
