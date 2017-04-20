@@ -29,20 +29,37 @@ public class PlayerController : Entity
         float x = Input.GetAxis ("Horizontal");
         float y = Input.GetAxis ("Vertical");
 
+        Move (_CurrentDirection);
+
         if (x > 0.0f)
-            Move (Vector2.right);
+            _CurrentDirection = Vector2.right;
         else if (x < -0.0f)
-            Move (Vector2.left);
+            _CurrentDirection = Vector2.left;
         else if (y > 0.0f)
-            Move (Vector2.up);
+            _CurrentDirection = Vector2.up;
         else if (y < -0.0f)
-            Move (Vector2.down);
+            _CurrentDirection = Vector2.down;
+        else
+            Move (Vector2.zero);
+
+        SetRotation ();
     }
 
     protected override void Move (Vector2 dir)
     {
-        _CurrentDirection = dir;
-        _Transform.Translate (dir * (Time.deltaTime * _Speed));
+        _Rigidbody2D.velocity = dir * Time.fixedDeltaTime * _Speed;
+    }
+
+    private void SetRotation ()
+    {
+        if (_CurrentDirection == Vector2.right)
+            _Transform.rotation = Quaternion.Euler (0f, 0f, 270f);
+        else if (_CurrentDirection == Vector2.left)
+            _Transform.rotation = Quaternion.Euler (0f, 0f, 90f);
+        else if (_CurrentDirection == Vector2.up)
+            _Transform.rotation = Quaternion.Euler (0f, 0f, 0f);
+        else if (_CurrentDirection == Vector2.down)
+            _Transform.rotation = Quaternion.Euler (0f, 0f, 180f);
     }
 
     private IEnumerator FireProjectile ()
@@ -52,14 +69,14 @@ public class PlayerController : Entity
         var projectile = _Pool.RetrieveFromPool ();
 
         if (projectile)
-            SetProjectileDirection (projectile.gameObject);
+            SetProjectileRotation (projectile.gameObject);
 
         yield return new WaitForSeconds (_FireRate);
 
         _CanFire = true;
     }
 
-    private void SetProjectileDirection (GameObject projectile)
+    private void SetProjectileRotation (GameObject projectile)
     {
         projectile.transform.position = _Transform.position;
 
