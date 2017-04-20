@@ -89,4 +89,10 @@ public class PlayerController : Entity
         else if (_CurrentDirection == Vector2.down)
             projectile.transform.rotation = Quaternion.Euler (0f, 0f, Random.Range (88.5f, 91.5f));
     }
+
+    private void OnCollisionEnter2D (Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag ("Basic Enemy"))
+            Health--;
+    }
 }
