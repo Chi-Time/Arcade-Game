@@ -34,7 +34,7 @@ public abstract class Entity : MonoBehaviour
     protected virtual void Setup ()
     {
         _Rigidbody2D.gravityScale = 0f;
-        _Rigidbody2D.isKinematic = true;
+        _Rigidbody2D.isKinematic = false;
         _Rigidbody2D.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
