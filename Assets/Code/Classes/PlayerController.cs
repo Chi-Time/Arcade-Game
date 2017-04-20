@@ -5,7 +5,6 @@ public class PlayerController : Entity
 {
     [SerializeField] private float _FireRate = 0.0f;
     [SerializeField] private Pool _Pool = new Pool();
-    //[SerializeField] private BulletPool _Pool = new BulletPool ();
 
     private bool _CanFire = true;
     private Vector2 _CurrentDirection = Vector2.up;
