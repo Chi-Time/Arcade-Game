@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof (Rigidbody2D))]
-public class PlayerProjectile : PoolObject
+public class PlayerProjectile : MonoBehaviour, IPoolable
 {
     [Tooltip("The speed of the projectile's movement.")]
     [SerializeField] private float _Speed = 0.0f;
@@ -12,6 +12,7 @@ public class PlayerProjectile : PoolObject
 
     private Rigidbody2D _Rigidbody2D = null;
     private Transform _Transform = null;
+    private Pool _Pool = null;
     //private BulletPool _Pool = null;
 
     private void Awake ()
@@ -29,6 +30,11 @@ public class PlayerProjectile : PoolObject
     //{
     //    _Pool = pool;
     //}
+
+    public void SetPool (Pool pool)
+    {
+        _Pool = pool;
+    }
 
     private void Start ()
     {
@@ -74,5 +80,10 @@ public class PlayerProjectile : PoolObject
         yield return new WaitForSeconds (delay);
 
         Cull ();
-    } 
+    }
+
+    public void Cull ()
+    {
+        _Pool.ReturnToPool (this.gameObject);
+    }
 }
