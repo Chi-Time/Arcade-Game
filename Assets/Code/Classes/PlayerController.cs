@@ -4,7 +4,8 @@ using UnityEngine;
 public class PlayerController : Entity
 {
     [SerializeField] private float _FireRate = 0.0f;
-    [SerializeField] private BulletPool _Pool = new BulletPool ();
+    [SerializeField] private Pool _Pool = new Pool();
+    //[SerializeField] private BulletPool _Pool = new BulletPool ();
 
     private bool _CanFire = true;
     private Vector2 _CurrentDirection = Vector2.up;
@@ -13,7 +14,7 @@ public class PlayerController : Entity
     {
         base.Initialise ();
 
-        _Pool.Intialise ();
+        _Pool.Intialise ("Bullet Pool");
     }
 
     private void Update ()
