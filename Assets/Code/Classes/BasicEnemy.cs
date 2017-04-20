@@ -86,8 +86,13 @@ public class BasicEnemy : Entity
 
     private void Attack ()
     {
-        float step = _Speed * Time.deltaTime;
-        _Rigidbody2D.MovePosition (Vector3.MoveTowards (_Transform.position, _Target.position, step));
+        if(_Target)
+        {
+            float step = _Speed * Time.deltaTime;
+            _Rigidbody2D.MovePosition (Vector3.MoveTowards (_Transform.position, _Target.position, step));
+        }
+
+        _CurrentState = States.Patrol;
     }
 
     protected override void Move (Vector2 dir)
