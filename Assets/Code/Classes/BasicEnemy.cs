@@ -12,7 +12,7 @@ public class BasicEnemy : Entity
     [SerializeField] private float _ChangeRate = 0.5f;
 
     private Vector3 _CurrentDirection = Vector3.zero;
-    private States _CurrentState = States.Patrol;
+    private States _CurrentState = States.Attack;
     private Transform _Target = null;
     private bool _CanChange = true;
 
@@ -20,8 +20,6 @@ public class BasicEnemy : Entity
     {
         base.Setup ();
 
-        _Rigidbody2D.isKinematic = false;
-        _Rigidbody2D.gravityScale = 0.0f;
         _Target = GameObject.FindGameObjectWithTag ("Player").transform;
     }
 
@@ -36,16 +34,28 @@ public class BasicEnemy : Entity
     private void Patrol ()
     {
         if (_CanChange)
-            StartCoroutine ("SelectDirection");
+            StartCoroutine ("ChangeDirection");
     }
 
-    private IEnumerator SelectDirection ()
+    private IEnumerator ChangeDirection ()
     {
         _CanChange = false;
 
-        var dir = Random.Range (1, 8);
+        SelectDirection ();
 
-        switch (dir)
+        Move (_CurrentDirection);
+
+        yield return new WaitForSeconds (_ChangeRate);
+
+        StopAllCoroutines ();
+        _CanChange = true;
+    }
+
+    private void SelectDirection ()
+    {
+        var index = Random.Range (1, 8);
+
+        switch (index)
         {
             case 1:
                 _CurrentDirection = Vector3.right;
@@ -72,17 +82,12 @@ public class BasicEnemy : Entity
                 _CurrentDirection = new Vector3 (1, -1);
                 break;
         }
-
-        Move (_CurrentDirection);
-
-        yield return new WaitForSeconds (_ChangeRate);
-
-        StopAllCoroutines ();
-        _CanChange = true;
     }
 
     private void Attack ()
     {
+        float step = _Speed * Time.deltaTime;
+        _Rigidbody2D.MovePosition (Vector3.MoveTowards (_Transform.position, _Target.position, step));
     }
 
     protected override void Move (Vector2 dir)
