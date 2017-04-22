@@ -31,7 +31,7 @@ public class FPSDisplay : MonoBehaviour
 
         style.alignment = TextAnchor.UpperLeft;
         style.fontSize = height * 2 / 100;
-        style.normal.textColor = _CounterTextColour;//new Color (0.0f, 0.0f, 0.5f, 1.0f);
+        style.normal.textColor = _CounterTextColour;
 
         var msec = _DeltaTime * 1000.0f;
         var fps = 1.0f / _DeltaTime;
