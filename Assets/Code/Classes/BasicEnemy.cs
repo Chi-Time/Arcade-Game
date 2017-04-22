@@ -17,11 +17,16 @@ public class BasicEnemy : Entity, IPoolable
     private bool _CanChange = true;
     private Pool _Pool = null;
 
+    protected override void Initialise ()
+    {
+        base.Initialise ();
+
+        _Target = GameObject.FindGameObjectWithTag ("Player").transform;
+    }
+
     protected override void Setup ()
     {
         base.Setup ();
-
-        _Target = GameObject.FindGameObjectWithTag ("Player").transform;
 
         SelectState ();
     }
@@ -130,8 +135,17 @@ public class BasicEnemy : Entity, IPoolable
             Health--;
     }
 
+    protected override void Die ()
+    {
+        Cull ();
+    }
+
     public void Cull ()
     {
+        var coin = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().CoinPool.RetrieveFromPool ();
+        coin.transform.position = this.transform.position;
+        coin.SetActive (true);
+        gameObject.SetActive (false);
         _Pool.ReturnToPool (this.gameObject);
     } 
 }
