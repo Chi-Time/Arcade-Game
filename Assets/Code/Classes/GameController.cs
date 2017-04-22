@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
 
     private void Awake ()
     {
-        CoinPool.Intialise ("Coin Pool");
+        CoinPool.Intialise ("Coin Pool", "Coin");
     } 
 
     private void UpdateScore (int score)

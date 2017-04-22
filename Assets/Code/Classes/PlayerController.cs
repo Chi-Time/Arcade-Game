@@ -13,7 +13,7 @@ public class PlayerController : Entity
     {
         base.Initialise ();
 
-        _Pool.Intialise ("Bullet Pool");
+        _Pool.Intialise ("Bullet Pool", "Bullet");
     }
 
     private void Update ()
