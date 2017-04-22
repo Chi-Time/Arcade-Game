@@ -147,6 +147,7 @@ public class BasicEnemy : Entity, IPoolable
         var coin = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().CoinPool.RetrieveFromPool ();
         coin.transform.position = this.transform.position;
         coin.SetActive (true);
+        GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().Kills += 1;
         gameObject.SetActive (false);
         _Pool.ReturnToPool (this.gameObject);
     }
@@ -169,7 +170,6 @@ public class BasicEnemy : Entity, IPoolable
 
         while (t < 1.0f)
         {
-            print (name + ": " + t);
             t += Time.deltaTime / aTime;
 
             var newAlpha = new Color (1, 1, 1, Mathf.Lerp (alpha, aValue, t));
