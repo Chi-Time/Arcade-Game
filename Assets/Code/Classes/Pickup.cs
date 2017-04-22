@@ -14,13 +14,11 @@ public class Pickup : MonoBehaviour, IPoolable
     private bool _IsBlinking = false;
     private float _CachedLifetime = 0.0f;
     private SpriteRenderer _SpriteRenderer = null;
-    private Transform _Transform = null;
     private Pool _Pool = null;
 
     private void Awake ()
     {
         _SpriteRenderer = GetComponent<SpriteRenderer> ();
-        _Transform = GetComponent<Transform> ();
     }
 
     private void Start ()
@@ -72,7 +70,7 @@ public class Pickup : MonoBehaviour, IPoolable
     {
         if(other.CompareTag("Player"))
         {
-            GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().Score++;
+            GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().Score += _Value;
             Cull ();
         }
     }
