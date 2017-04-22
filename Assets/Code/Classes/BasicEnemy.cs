@@ -10,8 +10,10 @@ enum States
 public class BasicEnemy : Entity, IPoolable
 {
     [SerializeField] private float _ChangeRate = 0.5f;
+    [SerializeField] private float _FadeSpeed = .25f;
 
     private Vector3 _CurrentDirection = Vector3.zero;
+    private SpriteRenderer _SpriteRenderer = null;
     private States _CurrentState = States.Attack;
     private Transform _Target = null;
     private bool _CanChange = true;
@@ -21,13 +23,13 @@ public class BasicEnemy : Entity, IPoolable
     {
         base.Initialise ();
 
+        _SpriteRenderer = GetComponent<SpriteRenderer> ();
         _Target = GameObject.FindGameObjectWithTag ("Player").transform;
     }
 
     protected override void Setup ()
     {
         base.Setup ();
-
         SelectState ();
     }
 
@@ -147,5 +149,33 @@ public class BasicEnemy : Entity, IPoolable
         coin.SetActive (true);
         gameObject.SetActive (false);
         _Pool.ReturnToPool (this.gameObject);
-    } 
+    }
+
+    private void OnEnable ()
+    {
+        StartCoroutine (FadeTo (1.0f, _FadeSpeed));
+    }
+
+    private void OnDisable ()
+    {
+        StopAllCoroutines ();
+        _SpriteRenderer.material.color = new Color (Color.white.r, Color.white.g, Color.white.b, 0.0f);
+    }
+
+    private IEnumerator FadeTo (float aValue, float aTime)
+    {
+        var t = 0.0f;
+        var alpha = _SpriteRenderer.material.color.a;
+
+        while (t < 1.0f)
+        {
+            print (name + ": " + t);
+            t += Time.deltaTime / aTime;
+
+            var newAlpha = new Color (1, 1, 1, Mathf.Lerp (alpha, aValue, t));
+            _SpriteRenderer.material.color = newAlpha;
+
+            yield return null;
+        }
+    }
 }
