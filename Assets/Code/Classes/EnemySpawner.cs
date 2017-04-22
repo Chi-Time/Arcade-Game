@@ -34,7 +34,6 @@ public class EnemySpawner : MonoBehaviour
         SpawnPositions ();
     }
 
-    //TODO: Implement fade in for enemies and invoke each enemy with a minor .001f delay just for FX.
     private IEnumerator SpawnWave ()
     {
         yield return new WaitForSeconds (_SpawnTime);
@@ -56,7 +55,6 @@ public class EnemySpawner : MonoBehaviour
             var spawnPos = new Vector3 (_XSpawnPosition, _YSpawnPosition);
 
             _SpawnPositions[i] = spawnPos;
-            //GetEnemy ();
         }
 
         SpawnPlaceHolder ();
@@ -80,9 +78,6 @@ public class EnemySpawner : MonoBehaviour
 
             if (enemy)
             {
-                //var spawnPos = new Vector3 (_XSpawnPosition, _YSpawnPosition);
-
-                //enemy.transform.position = spawnPos;
                 enemy.transform.position = _SpawnPositions[i];
             }
         }
