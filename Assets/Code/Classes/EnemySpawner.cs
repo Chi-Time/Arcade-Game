@@ -3,10 +3,12 @@ using System.Collections;
 
 public class EnemySpawner : MonoBehaviour
 {
+    [SerializeField] private GameObject _PlaceHolder = null;
     [SerializeField] private int _MinWaveSize = 0, _MaxWaveSize = 0;
     [SerializeField] private float _MinMapWidth = 0, _MaxMapWidth = 0;
     [SerializeField] private float _MinMapHeight = 0, _MaxMapHeight = 0;
     [SerializeField] private float _MinSpawnDelay = 0, _MaxSpawnDelay = 0;
+    [SerializeField] private float _PreSpawnDelay = 0.0f;
     [SerializeField] private Pool _Pool = new Pool();
 
     private int _WaveAmount { get { return Random.Range (_MinWaveSize, _MaxWaveSize); } }
@@ -14,6 +16,7 @@ public class EnemySpawner : MonoBehaviour
     private float _YSpawnPosition { get { return Random.Range (_MinMapHeight, _MaxMapHeight); } }
     private float _XSpawnPosition { get { return Random.Range (_MinMapWidth, _MaxMapWidth); } }
 
+    private Vector3[] _SpawnPositions = null;
 
     private void Awake ()
     {
@@ -28,7 +31,7 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnInitialWave ()
     {
-        Spawn ();
+        SpawnPositions ();
     }
 
     //TODO: Implement fade in for enemies and invoke each enemy with a minor .001f delay just for FX.
@@ -36,35 +39,52 @@ public class EnemySpawner : MonoBehaviour
     {
         yield return new WaitForSeconds (_SpawnTime);
 
-        Spawn ();
+        SpawnPositions ();
 
         StopAllCoroutines ();
         StartCoroutine ("SpawnWave");
     }
 
-    private void Spawn ()
+    private void SpawnPositions ()
     {
-        for (int i = 0; i < _WaveAmount; i++)
+        int currentWave = _WaveAmount;
+
+        _SpawnPositions = new Vector3[currentWave];
+
+        for (int i = 0; i < currentWave; i++)
         {
-            GetEnemy ();
+            var spawnPos = new Vector3 (_XSpawnPosition, _YSpawnPosition);
+
+            _SpawnPositions[i] = spawnPos;
+            //GetEnemy ();
+        }
+
+        SpawnPlaceHolder ();
+        Invoke ("GetEnemy", _PreSpawnDelay);
+    }
+
+    private void SpawnPlaceHolder ()
+    {
+        for (int i = 0; i < _SpawnPositions.Length; i++)
+        {
+            var go = (GameObject)Instantiate (_PlaceHolder, _SpawnPositions[i], Quaternion.identity);
+            Destroy (go, _PreSpawnDelay);
         }
     }
 
     private void  GetEnemy ()
     {
-        var enemy = _Pool.RetrieveFromPool ();
-
-        if (enemy)
+        for(int i = 0; i < _SpawnPositions.Length; i++)
         {
-            var spawnPos = new Vector3 (_XSpawnPosition, _YSpawnPosition);
+            var enemy = _Pool.RetrieveFromPool ();
 
-            enemy.transform.position = spawnPos;
+            if (enemy)
+            {
+                //var spawnPos = new Vector3 (_XSpawnPosition, _YSpawnPosition);
 
-            //for (int j = 0; j < _Pool.ActivePool.Count; j++)
-            //{
-            //    if(spawnPos == _Pool.ActivePool[j].transform.position)
-
-            //}
+                //enemy.transform.position = spawnPos;
+                enemy.transform.position = _SpawnPositions[i];
+            }
         }
     }
 }
