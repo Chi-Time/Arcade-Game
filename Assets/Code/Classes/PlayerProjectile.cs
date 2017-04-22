@@ -13,7 +13,6 @@ public class PlayerProjectile : MonoBehaviour, IPoolable
     private Rigidbody2D _Rigidbody2D = null;
     private Transform _Transform = null;
     private Pool _Pool = null;
- 
 
     private void Awake ()
     {
@@ -65,7 +64,7 @@ public class PlayerProjectile : MonoBehaviour, IPoolable
 
     private void OnTriggerEnter2D (Collider2D other)
     {
-        if (!other.CompareTag ("Player"))
+        if (!other.CompareTag ("Player") && !other.CompareTag("Coin"))
             StartCoroutine (TimedCull (0.0f));
     }
 
