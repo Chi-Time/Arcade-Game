@@ -4,19 +4,25 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Pool
 {
+    public List<GameObject> ActivePool { get { return _ActivePool; } }
+    public List<GameObject> InactivePool { get { return _InactivePool; } }
+
     [SerializeField] private int _PoolSize = 0;
     [SerializeField] private GameObject[] _Prefabs = null;
     [SerializeField] private List<GameObject> _ActivePool = new List<GameObject> ();
     [SerializeField] private List<GameObject> _InactivePool = new List<GameObject> ();
 
     private string _PoolName = "Pool";
+    private string _ObjectName = "Object";
 
     /// <summary>
     /// Initialises the pool for later use. (Faux Constructor.)
     /// </summary>
-    public void Intialise (string poolName)
+    public void Intialise (string poolName, string objectName)
     {
         _PoolName = poolName;
+        _ObjectName = objectName;
+
         GeneratePool ();
     }
 
@@ -38,7 +44,7 @@ public class Pool
     {
         var go = (GameObject)Object.Instantiate (obj, Vector3.zero, Quaternion.identity);
         go.transform.SetParent (GetPoolHolder ());
-        go.name = "Projectile " + index;
+        go.name = _ObjectName + ": " + index;
         go.SetActive (false);
 
         var poolObj = go.GetComponent<IPoolable> ();
